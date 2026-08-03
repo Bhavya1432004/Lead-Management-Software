@@ -1,0 +1,132 @@
+﻿# Visual Studio cache/options
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.iml
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Dd]ebug*/
+[Rr]elease*/
+[Bb]uild*/
+
+# Visual Studio IDE
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Rider
+.idea/
+*.sln.iml
+*.swp
+*.swo
+*~
+
+# Resharper
+*.DotSettings.user
+
+# User-specific files
+appsettings.Development.json
+appsettings.local.json
+*.local.*
+
+# Entity Framework
+Migrations/
+
+# Logs
+*.log
+logs/
+
+# Database files
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# VS Code extensions
+*.vsix
+
+# Temp files
+*.temp
+*.tmp
+*.cache
+
+# Coverage reports
+coverage/
+*.coverage
+opencoverage/
+
+# Test Results
+TestResults/
+
+# BinLog files
+*.binlog
+
+# ASP.NET Core
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Local History for Visual Studio
+.localhistory/
+
+# BLG Files
+*.blg
+
+# Publish folder
+PublishProfiles/
+Properties/PublishProfiles/
+
+# secrets and local settings
+appsettings.*.json
+!appsettings.json
+
+# Node modules (if any frontend exists)
+node_modules/
+npm-debug.log
+yarn-error.log
