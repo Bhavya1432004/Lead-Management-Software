@@ -20,5 +20,8 @@ namespace LMSWebAPI.Models
         [Required]
         public int update_by { get; set; }
 
+        [Required]
+        public DateTime? update_date { get; set; }
+
     }
 }

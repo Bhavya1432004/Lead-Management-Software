@@ -80,6 +80,37 @@ namespace LMSWebAPI.Controllers
 
         }
 
+        //Bootstrap Superuser - Only works if no user exist
+        [HttpPost("bootstrap-superuser")]
+        public async Task<IActionResult> BootstrapSuperuser([FromBody] User user)
+        {
+            if (await _context.users.AnyAsync())
+            {
+                return BadRequest("Database already initialized. Cannot bootstrap. ");
+            }
+
+            //validate input
+            if (string.IsNullOrEmpty(user.u_name) || string.IsNullOrEmpty(user.u_email) || string.IsNullOrEmpty(user.u_password))
+            {
+                return BadRequest("Name, Email and Password are required.");
+            }
+
+            //Create Superuser
+            var superuser = new User
+            {
+                u_name = user.u_name,
+                u_email = user.u_email,
+                u_password = HashPassword(user.u_password),
+                role = UserRole.Superuser,
+                contact_no = user.contact_no ?? "N/A"
+            };
+
+            _context.users.Add(superuser);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Superuser created successfully!", user = superuser.u_name });
+        }
+
         //Login User
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
