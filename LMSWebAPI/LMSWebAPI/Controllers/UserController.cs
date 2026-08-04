@@ -48,12 +48,12 @@ namespace LMSWebAPI.Controllers
 
             if (roleClaim == "Admin")
             {
-                usersQuery = _context.users.Where(v => v.role == UserRole.Manager);
+                usersQuery = _context.users.Where(v => v.Role == UserRole.Manager);
             }
 
             else if (roleClaim == "Manager")
             {
-                usersQuery = _context.users.Where(u => u.role == UserRole.SalesRepresentative);
+                usersQuery = _context.users.Where(u => u.Role == UserRole.SalesRepresentative);
             }
             else
             {
@@ -62,10 +62,10 @@ namespace LMSWebAPI.Controllers
 
             var users = await usersQuery.Select( u => new
             {
-                u.u_id,
-                u.u_name,
-                u.u_email,
-                u.role
+                u.UserId,
+                u.UserName,
+                u.UserEmail,
+                u.Role
             }).ToListAsync();
 
             return Ok(users);

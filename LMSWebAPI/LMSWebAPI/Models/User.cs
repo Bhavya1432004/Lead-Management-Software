@@ -8,21 +8,26 @@ namespace LMSWebAPI.Models
     public class User
     {
         [Key]
-        public int u_id { get; set; }
+        [Column("user_id")]
+        public int UserId { get; set; }
 
         [Required]
-        public string u_name { get; set; }
+        [Column("user_name")]
+        public string UserName { get; set; }
         [Required]
-        public string u_email { get; set; }
+        [Column("user_email")]
+        public string UserEmail { get; set; }
 
         [Required]
-        public string u_password { get; set; }
+        [Column("user_password")]
+        public string UserPassword { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(50)")]
+        [Column("role", TypeName = "varchar(50)")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public UserRole role { get; set; }
+        public UserRole Role { get; set; }
 
-        public string contact_no { get; set; }
+        [Column("contact_phone")]
+        public string ContactPhone { get; set; }
     }
 }

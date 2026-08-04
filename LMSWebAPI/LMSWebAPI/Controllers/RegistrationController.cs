@@ -54,23 +54,23 @@ namespace LMSWebAPI.Controllers
                 return Unauthorized("Only Superuser or Admin can create new users.");
             }
 
-            if (currentUserRole == UserRole.Admin.ToString() && user.role == UserRole.Superuser)
+            if (currentUserRole == UserRole.Admin.ToString() && user.Role == UserRole.Superuser)
             {
                 return BadRequest("Admin cannot create Superuser");
             }
 
-            if (currentUserRole == UserRole.Admin.ToString() && user.role == UserRole.Admin)
+            if (currentUserRole == UserRole.Admin.ToString() && user.Role == UserRole.Admin)
             {
                 return BadRequest("Admin cannot create another Admin");
             }
 
 
-            if (await _context.users.AnyAsync(v => v.u_email == user.u_email && v.role == user.role))
+            if (await _context.users.AnyAsync(v => v.UserEmail == user.UserEmail && v.Role == user.Role))
             {
                 return BadRequest("User with this email and role already exists.");
             }
 
-            user.u_password = HashPassword(user.u_password);
+            user.UserPassword = HashPassword(user.UserPassword);
             _context.users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -90,7 +90,7 @@ namespace LMSWebAPI.Controllers
             }
 
             //validate input
-            if (string.IsNullOrEmpty(user.u_name) || string.IsNullOrEmpty(user.u_email) || string.IsNullOrEmpty(user.u_password))
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.UserEmail) || string.IsNullOrEmpty(user.UserPassword))
             {
                 return BadRequest("Name, Email and Password are required.");
             }
@@ -98,25 +98,25 @@ namespace LMSWebAPI.Controllers
             //Create Superuser
             var superuser = new User
             {
-                u_name = user.u_name,
-                u_email = user.u_email,
-                u_password = HashPassword(user.u_password),
-                role = UserRole.Superuser,
-                contact_no = user.contact_no ?? "N/A"
+                UserName = user.UserName,
+                UserEmail = user.UserEmail,
+                UserPassword = HashPassword(user.UserPassword),
+                Role = UserRole.Superuser,
+                ContactPhone = user.ContactPhone ?? "N/A"
             };
 
             _context.users.Add(superuser);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Superuser created successfully!", user = superuser.u_name });
+            return Ok(new { message = "Superuser created successfully!", user = superuser.UserName });
         }
 
         //Login User
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var existingUser = await _context.users.FirstOrDefaultAsync(v => v.u_email == loginRequest.u_email);
-            if (existingUser == null || !VerifyPassword(loginRequest.u_password, existingUser.u_password))
+            var existingUser = await _context.users.FirstOrDefaultAsync(v => v.UserEmail == loginRequest.UserEmail);
+            if (existingUser == null || !VerifyPassword(loginRequest.UserPassword, existingUser.UserPassword))
             {
                 return Unauthorized("Invalid Credentials");
             }
@@ -138,16 +138,16 @@ namespace LMSWebAPI.Controllers
                 return NotFound("User not found");
             }
 
-            if (updateUser.u_id != id)
+            if (updateUser.UserId != id)
             {
                 return BadRequest("User ID cannot be changed.");
             }
 
 
-            existingUser.u_name = updateUser.u_name ?? existingUser.u_name;
-            existingUser.u_email = updateUser.u_email ?? existingUser.u_email;
+            existingUser.UserName = updateUser.UserName ?? existingUser.UserName;
+            existingUser.UserEmail = updateUser.UserEmail ?? existingUser.UserEmail;
             //existingUser.role = updateUser.role ?? existingUser.role;
-            existingUser.contact_no = updateUser.contact_no ?? existingUser.contact_no;
+            existingUser.ContactPhone = updateUser.ContactPhone ?? existingUser.ContactPhone;
 
 
             //if (updateUser.role != null)
@@ -156,9 +156,9 @@ namespace LMSWebAPI.Controllers
             //}
 
             //Hash password only if new one is provided
-            if (!string.IsNullOrEmpty(updateUser.u_password))
+            if (!string.IsNullOrEmpty(updateUser.UserPassword))
             {
-                existingUser.u_password = HashPassword(updateUser.u_password);
+                existingUser.UserPassword = HashPassword(updateUser.UserPassword);
             }
 
             await _context.SaveChangesAsync();
@@ -185,16 +185,16 @@ namespace LMSWebAPI.Controllers
             //user.u_name ??= "Unknown";
             //user.u_email ??= "unknown@example.com";
 
-            var adminUser = await _context.users.FirstOrDefaultAsync(u => u.role == UserRole.Admin);
+            var adminUser = await _context.users.FirstOrDefaultAsync(u => u.Role == UserRole.Admin);
             if(adminUser == null)
             {
                 return BadRequest("Cannot delete user. No admin found to reassign leads.");
             }
 
-            var userLeads = await _context.leads.Where(l => l.assigned_to == id).ToListAsync();
+            var userLeads = await _context.leads.Where(l => l.AssignedToUserId == id).ToListAsync();
             foreach(var lead in userLeads)
             {
-                lead.assigned_to = adminUser.u_id;
+                lead.AssignedToUserId = adminUser.UserId;
             }
             await _context.SaveChangesAsync();
 
@@ -216,11 +216,11 @@ namespace LMSWebAPI.Controllers
             var users = await _context.users
                 .Select(v => new
                 {
-                    Id = v.u_id,
-                    Name = v.u_name ?? "N/A",
-                    Email = v.u_email ?? "N/A",
-                    Role = v.role,
-                    contactNo = v.contact_no ?? "N/A",
+                    Id = v.UserId,
+                    Name = v.UserName ?? "N/A",
+                    Email = v.UserEmail ?? "N/A",
+                    Role = v.Role,
+                    contactNo = v.ContactPhone ?? "N/A",
                 })
                 .ToListAsync();
             return Ok(users);
@@ -236,9 +236,9 @@ namespace LMSWebAPI.Controllers
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.u_id.ToString()),
-                new Claim(ClaimTypes.Email, user.u_email),
-                new Claim(ClaimTypes.Role, user.role.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Email, user.UserEmail),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
             var token = new JwtSecurityToken(

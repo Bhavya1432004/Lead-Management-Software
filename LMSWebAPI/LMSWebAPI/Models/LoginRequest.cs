@@ -5,11 +5,11 @@ namespace LMSWebAPI.Models
     public class LoginRequest
     {
         [Required]
-        public string u_email { get; set; }
+        public string UserEmail { get; set; }
         [Required]
-        public string u_password { get; set; }
+        public string UserPassword { get; set; }
 
         [Required]
-        public UserRole role { get; set; }
+        public UserRole Role { get; set; }
     }
 }

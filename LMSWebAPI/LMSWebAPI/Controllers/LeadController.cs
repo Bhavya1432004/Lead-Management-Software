@@ -37,7 +37,7 @@ namespace LMSWebAPI.Controllers
 
             int userId = int.Parse(userIdClaim.Value);
 
-            if (await _context.leads.AnyAsync(v => v.lead_email == lead.lead_email))
+            if (await _context.leads.AnyAsync(v => v.LeadEmail == lead.LeadEmail))
             {
                 return BadRequest("Lead with this email already exists.");
             }
@@ -49,15 +49,15 @@ namespace LMSWebAPI.Controllers
             var leadAssignment = new LeadAssignment
             {
                 //assignment_id = 0,
-                lead_id = lead.lead_id,
-                u_id = userId,
-                assignment_date = DateTime.UtcNow
+                LeadId = lead.LeadId,
+                UserId = userId,
+                AssignmentDate = DateTime.UtcNow
             };
 
             _context.lead_assignment.Add(leadAssignment);
                await _context.SaveChangesAsync();
 
-            await new ActivityLogController(_context, _configuration).ActivityLog(userId, ActionType.Add, lead.lead_id);
+            await new ActivityLogController(_context, _configuration).ActivityLog(userId, ActionType.Add, lead.LeadId);
 
             return Ok("Lead added and assigned successfully");
         }
@@ -67,7 +67,7 @@ namespace LMSWebAPI.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateLeadStatus(int id, [FromBody] string status)
         {
-            var lead = await _context.leads.FirstOrDefaultAsync(l=> l.lead_id == id);
+            var lead = await _context.leads.FirstOrDefaultAsync(l=> l.LeadId == id);
             if (lead == null) 
             {
                 return NotFound(new { message = "Lead not found" });
@@ -97,11 +97,11 @@ namespace LMSWebAPI.Controllers
             int userId = int.Parse(userIdclaim.Value);
 
 
-            string oldStatus = lead.lead_status.ToString();
+            string oldStatus = lead.Status.ToString();
 
 
             //It will update the lead status
-            lead.lead_status = Enum.Parse<LeadStatus>(status, true);
+            lead.Status = Enum.Parse<LeadStatus>(status, true);
             
 
             var leadLog = new LeadLog
@@ -114,7 +114,7 @@ namespace LMSWebAPI.Controllers
 
             _context.lead_log.Add(leadLog);
 
-            await new ActivityLogController(_context, _configuration).ActivityLog(userId, ActionType.Update, lead.lead_id);
+            await new ActivityLogController(_context, _configuration).ActivityLog(userId, ActionType.Update, lead.LeadId);
 
             return Ok(new { message = "Lead status updated successfully", lead });
 
@@ -128,13 +128,13 @@ namespace LMSWebAPI.Controllers
             var leads = await _context.leads
                 .Select(v => new
                 {
-                    Id = v.lead_id,
-                    Name = v.lead_name ?? "N/A",
-                    Email = v.lead_email ?? "N/A",
-                    contactNo = v.lead_contact ?? "N/A",
-                    Source = v.lead_source ?? "N/A",
-                    Assigned_to = v.assigned_to,
-                    LeadStatus = v.lead_status
+                    Id = v.LeadId,
+                    Name = v.LeadName ?? "N/A",
+                    Email = v.LeadEmail ?? "N/A",
+                    contactNo = v.LeadPhone ?? "N/A",
+                    Source = v.LeadSource ?? "N/A",
+                    Assigned_to = v.AssignedToUserId,
+                    LeadStatus = v.Status
                 })
                 .ToListAsync();
             return Ok(leads);

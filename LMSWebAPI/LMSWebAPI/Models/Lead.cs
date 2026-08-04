@@ -7,29 +7,37 @@ namespace LMSWebAPI.Models
     public class Lead
     {
         [Key]
-        public int lead_id { get; set; }
+        [Column("lead_id")]
+        public int LeadId { get; set; }
         
         [Required]
-        public string lead_name { get; set; } = null!;
+        [Column("lead_name")]
+        public string LeadName { get; set; } = null!;
 
         [Required]
-        public string lead_email { get; set; } = null!;
+        [Column("lead_email")]
+        public string LeadEmail { get; set; } = null!;
 
-        public string? lead_contact { get; set; }
+        [Column("lead_phone")]
+        public string? LeadPhone { get; set; }
 
         [Required] 
-        public string lead_source { get; set; } = null!;
+        [Column("lead_source")]
+        public string LeadSource { get; set; } = null!;
 
-        public int assigned_to { get; set; }
+        [Column("assigned_to_user_id")]
+        public int AssignedToUserId { get; set; }
 
         [Required]
-        [Column(TypeName ="varchar(50)")]
+        [Column("status",TypeName ="varchar(50)")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public LeadStatus lead_status { get; set; }
+        public LeadStatus Status { get; set; }
 
-        public DateTime created_at { get; set; }
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime? update_at { get; set; }
+        [Column("updated_at")]
+        public DateTime? UpdatedAt { get; set; }
 
         //[JsonIgnore]
         //public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();

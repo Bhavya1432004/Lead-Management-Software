@@ -24,81 +24,94 @@ namespace LMSWebAPI.Migrations
 
             modelBuilder.Entity("LMSWebAPI.Models.Lead", b =>
                 {
-                    b.Property<int>("lead_id")
+                    b.Property<int>("LeadId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("lead_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("lead_id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeadId"));
 
-                    b.Property<int>("assigned_to")
-                        .HasColumnType("int");
+                    b.Property<int>("AssignedToUserId")
+                        .HasColumnType("int")
+                        .HasColumnName("assigned_to_user_id");
 
-                    b.Property<DateTime>("created_at")
+                    b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("lead_contact")
-                        .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
-
-                    b.Property<string>("lead_email")
+                    b.Property<string>("LeadEmail")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("lead_email");
 
-                    b.Property<string>("lead_name")
+                    b.Property<string>("LeadName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("lead_name");
 
-                    b.Property<string>("lead_source")
+                    b.Property<string>("LeadPhone")
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("lead_phone");
+
+                    b.Property<string>("LeadSource")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("lead_source");
 
-                    b.Property<string>("lead_status")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(50)")
-                        .HasDefaultValue("New");
+                        .HasDefaultValue("New")
+                        .HasColumnName("status");
 
-                    b.Property<DateTime?>("update_at")
+                    b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("lead_id");
+                    b.HasKey("LeadId");
 
-                    b.HasIndex("assigned_to");
+                    b.HasIndex("AssignedToUserId");
 
                     b.ToTable("leads", (string)null);
                 });
 
             modelBuilder.Entity("LMSWebAPI.Models.LeadAssignment", b =>
                 {
-                    b.Property<int>("assignment_id")
+                    b.Property<int>("AssignmentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("assignment_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("assignment_id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssignmentId"));
 
-                    b.Property<DateTime>("assignment_date")
+                    b.Property<DateTime>("AssignmentDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnName("assignment_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("lead_id")
-                        .HasColumnType("int");
+                    b.Property<int>("LeadId")
+                        .HasColumnType("int")
+                        .HasColumnName("lead_id");
 
-                    b.Property<int>("u_id")
-                        .HasColumnType("int");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("assignment_id");
+                    b.HasKey("AssignmentId");
 
-                    b.HasIndex("lead_id");
+                    b.HasIndex("LeadId");
 
-                    b.HasIndex("u_id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("lead_assignment", (string)null);
                 });
@@ -144,42 +157,48 @@ namespace LMSWebAPI.Migrations
 
             modelBuilder.Entity("LMSWebAPI.Models.User", b =>
                 {
-                    b.Property<int>("u_id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("u_id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("contact_no")
+                    b.Property<string>("ContactPhone")
                         .IsRequired()
                         .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("contact_phone");
 
-                    b.Property<string>("role")
+                    b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("role");
 
-                    b.Property<string>("u_email")
+                    b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_email");
 
-                    b.Property<string>("u_name")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("user_name");
 
-                    b.Property<string>("u_password")
+                    b.Property<string>("UserPassword")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_password");
 
-                    b.HasKey("u_id");
+                    b.HasKey("UserId");
 
-                    b.HasIndex("u_email")
+                    b.HasIndex("UserEmail")
                         .IsUnique();
 
-                    b.HasIndex("u_name")
+                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("users", (string)null);
@@ -187,34 +206,39 @@ namespace LMSWebAPI.Migrations
 
             modelBuilder.Entity("Lms.Models.ActivityLog", b =>
                 {
-                    b.Property<int>("activity_id")
+                    b.Property<int>("ActivityId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("activity_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("activity_id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActivityId"));
 
-                    b.Property<DateTime>("action_date")
+                    b.Property<DateTime>("ActionDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnName("action_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("action_type")
+                    b.Property<string>("ActionType")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("action_typee");
 
-                    b.Property<int?>("lead_id")
-                        .HasColumnType("int");
+                    b.Property<int?>("LeadId")
+                        .HasColumnType("int")
+                        .HasColumnName("lead_id");
 
-                    b.Property<int>("u_id")
-                        .HasColumnType("int");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("activity_id");
+                    b.HasKey("ActivityId");
 
-                    b.HasIndex("action_date");
+                    b.HasIndex("ActionDate");
 
-                    b.HasIndex("lead_id");
+                    b.HasIndex("LeadId");
 
-                    b.HasIndex("u_id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("activity_log", (string)null);
                 });
@@ -223,7 +247,7 @@ namespace LMSWebAPI.Migrations
                 {
                     b.HasOne("LMSWebAPI.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("assigned_to")
+                        .HasForeignKey("AssignedToUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_leads_users_assigned_to");
@@ -233,14 +257,14 @@ namespace LMSWebAPI.Migrations
                 {
                     b.HasOne("LMSWebAPI.Models.Lead", null)
                         .WithMany()
-                        .HasForeignKey("lead_id")
+                        .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_lead_assignment_leads");
 
                     b.HasOne("LMSWebAPI.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("u_id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_lead_assignment_users");
@@ -267,13 +291,13 @@ namespace LMSWebAPI.Migrations
                 {
                     b.HasOne("LMSWebAPI.Models.Lead", null)
                         .WithMany()
-                        .HasForeignKey("lead_id")
+                        .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("FK_activity_log_leads");
 
                     b.HasOne("LMSWebAPI.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("u_id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_activity_log_users");

@@ -2,21 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Lms.Models;
 public class ActivityLog
 {
     [Key]
-    public int activity_id { get; set; }
+    [Column("activity_id")]
+    public int ActivityId { get; set; }
 
-    public int u_id { get; set; }
+    [Column("user_id")]
+    public int UserId { get; set; }
 
-    public int? lead_id { get; set; }
+    [Column("lead_id")]
+    public int? LeadId { get; set; }
 
-    public ActionType action_type { get; set; }
+    [Column("action_typee", TypeName = "varchar(50)")]
+    public ActionType ActionType { get; set; }
 
-    public DateTime action_date { get; set; }
+    [Column("action_date")]
+    public DateTime ActionDate { get; set; }
 
     //[JsonIgnore]
     //public virtual Lead Lead { get; set; } = null!;

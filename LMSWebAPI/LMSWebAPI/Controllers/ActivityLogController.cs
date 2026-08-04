@@ -45,7 +45,7 @@ namespace LMSWebAPI.Controllers
         {
             if (leadId.HasValue)
             {
-                var leadExists = await _context.leads.AnyAsync(l => l.lead_id == leadId);
+                var leadExists = await _context.leads.AnyAsync(l => l.LeadId == leadId);
                 if (!leadExists)
                 {
                     throw new Exception("Lead does not exist. Activity log failed.");
@@ -54,10 +54,10 @@ namespace LMSWebAPI.Controllers
 
             var log = new ActivityLog
             {
-                u_id = userId,
-                action_type = actionType,
-                lead_id = leadId,
-                action_date = DateTime.Now
+                UserId = userId,
+                ActionType = actionType,
+                LeadId = leadId,
+                ActionDate = DateTime.Now
             };
 
             _context.activity_log.Add(log);

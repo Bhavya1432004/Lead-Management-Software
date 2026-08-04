@@ -7,16 +7,16 @@ namespace LMSWebAPI.Models
     public class UpdateUser
     {
         [Key]
-        public int u_id { get; set; }
+        public int UserId { get; set; }
 
-        public string u_name { get; set; }
+        public string UserName { get; set; }
         
-        public string u_email { get; set; }
+        public string UserEmail { get; set; }
 
-        public string u_password { get; set; }
-        public UserRole role { get; set; }
+        public string UserPassword { get; set; }
+        public UserRole Role { get; set; }
 
-        public string contact_no { get; set; }
+        public string ContactPhone { get; set; }
 
     }
 }
